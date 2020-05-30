@@ -1,0 +1,21 @@
+class Solution {
+    public String compressString(String S) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = S.toCharArray();
+        int num = 1; // 该元素出现的次数
+        int i = 0; // 元素指针
+        char tmp = 0; // 记录当前需要比较的字符
+        while (i < chars.length) {
+            tmp = chars[i];
+            sb.append(chars[i]);
+            i++;
+            while (i < chars.length && chars[i] == tmp) {
+                num++;
+                i++;
+            }
+            sb.append(num + "");
+            num = 1;
+        }
+        return sb.length() >= S.length() ? S : sb.toString();
+    }
+}
