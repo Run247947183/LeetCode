@@ -1,0 +1,18 @@
+class Solution {
+    // 插入排序的方法
+    public void merge(int[] A, int m, int[] B, int n) {
+        for (int i = 0; i < n; i++) {
+            int tmp = B[i];
+            int cur = m - 1;
+            for (; cur >= 0; cur--) {
+                if (A[cur] > tmp) {
+                    A[cur + 1] = A[cur];
+                } else {
+                    break;
+                }
+            }
+            A[cur + 1] = tmp;
+            m++;
+        }
+    }
+}
