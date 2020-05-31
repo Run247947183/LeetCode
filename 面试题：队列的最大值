@@ -1,0 +1,37 @@
+class MaxQueue {
+    public Queue<Integer> queue;
+    public Deque<Integer> deque; // 双端队列，保存最大值
+
+    public MaxQueue() {
+        queue = new LinkedList<>();
+        deque = new LinkedList<>();
+    }
+    
+    public int max_value() {
+        return deque.size() > 0 ? deque.peek() : -1;
+    }
+    
+    public void push_back(int value) {
+        queue.offer(value);
+        while (deque.size() > 0 && deque.peekLast() < value) {
+            deque.pollLast();
+        }
+        deque.offerLast(value);
+    }
+    
+    public int pop_front() {
+        int tmp = queue.size() > 0 ? queue.poll() : -1;
+        if (deque.size() > 0 && deque.peek().equals(tmp)) {
+            deque.poll();
+        }
+        return tmp;
+    }
+}
+
+/**
+ * Your MaxQueue object will be instantiated and called as such:
+ * MaxQueue obj = new MaxQueue();
+ * int param_1 = obj.max_value();
+ * obj.push_back(value);
+ * int param_3 = obj.pop_front();
+ */
