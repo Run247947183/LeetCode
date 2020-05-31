@@ -1,0 +1,24 @@
+class Solution {
+    // 动态规划
+    // dp[i] 表示数组中下标为 i 位置的最长上升子序列长度
+    // 递归公式：遍历 i 之前的 dp 元素位置，找到最长的上升子序列长度
+    public int lengthOfLIS(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = 1; 
+        int maxCount = 1; 
+        for (int i = 1; i < nums.length; i++) {
+            int count = 0;
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i]) {
+                    count = Math.max(count, dp[j]);
+                }
+            }
+            dp[i] = count + 1;
+            maxCount = Math.max(maxCount, dp[i]);
+        }
+        return maxCount;
+    }
+}
