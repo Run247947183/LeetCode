@@ -1,0 +1,32 @@
+class Solution {
+    // 贪心算法
+    // 遍历 gas 数组，每次判断当前位置能否绕环一圈
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int i = 0;
+        boolean tag = false;
+        int countGas = 0;
+        while (i < gas.length) {
+            countGas = 0; // 多余油量清零
+            if (gas[i] >= cost[i]) {
+                countGas = gas[i] - cost[i];
+                int j = (i + 1) % gas.length;
+                // 开始进行绕环判断
+                while (j != i) {
+                    if (countGas + gas[j] < cost[j]) {
+                        break;
+                    } else {
+                        countGas += gas[j] - cost[j];
+                        j = (j + 1) % gas.length;
+                    }
+                }
+                if (j == i) {
+                    // 绕环成功，退出
+                    tag = true;
+                    break;
+                }
+            }
+            i++;
+        }
+        return tag ? i : -1;
+    }
+}
