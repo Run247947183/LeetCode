@@ -1,0 +1,27 @@
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int[] res = new int[num_people];
+        if (candies == 0 || num_people == 0) {
+            return res;
+        }
+        int i = 0;
+        int step = 0; // 循环次数
+        while (candies > 0) {
+            if (candies < (i + 1 + (step * num_people))) {
+                res[i] += candies;
+                break;
+            } else {
+                res[i] += i + 1 + (step * num_people);
+                candies -= i + 1 + (step * num_people);
+                // 数组下标更新以及循环次数增加判断
+                if (i == num_people - 1) {
+                    i = 0;
+                    step++;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return res;
+    }
+}
