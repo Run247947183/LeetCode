@@ -1,0 +1,71 @@
+方法一：广度优先搜索算法
+class Node {
+    public int left;
+    public int right;
+    public String s;
+    public Node(String s, int left, int right) {
+        this.s = s;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+class Solution {
+    // 广度优先搜索算法
+    // 注意：在添加 ')' 的时候要进行判断，看一下当前 '(' 的数量是否大于 ')'
+    // 只有 '(' 数量高于 ')' 时，才可以添加 ')' ，否则不符合括号生成的要求
+    public List<String> res = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        if (n == 0) {
+            return res;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(new Node("", 0, 0));
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                size--;
+                Node node = queue.poll();
+                if (node.left == n && node.right == n) {
+                    res.add(node.s);
+                }
+                if (node.left < n) {
+                    queue.offer(new Node(node.s +"(", node.left + 1, node.right));
+                }
+                if (node.right < n && node.left > node.right) {
+                    queue.offer(new Node(node.s + ")", node.left, node.right + 1));
+                }
+            }
+        }
+        return res;
+    }
+}
+
+方法二 深度优先搜索算法
+class Solution {
+    public List<String> res = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        if (n == 0) {
+            return res;
+        }
+        dfs(n, "", 0, 0);
+        return res;
+    }
+    public void dfs(int n, String s, int left, int right) {
+        if (left == n && right == n) {
+            res.add(s);
+            return;
+        }
+        if (left < right) {
+            return;
+        }
+
+        if (left < n) {
+            dfs(n, s + "(", left + 1, right);
+        }
+
+        if (right < n) {
+            dfs(n, s + ")", left, right + 1);
+        }
+    }
+}
