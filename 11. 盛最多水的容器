@@ -1,0 +1,24 @@
+class Solution {
+    // 双指针
+    public int maxArea(int[] height) {
+        if (height.length == 0) {
+            return 0;
+        }
+        int left = 0;
+        int right = height.length - 1;
+        int res = 0;
+        while (left < right) {
+            int tmp = Math.min(height[left], height[right]);
+            res = Math.max(res, (right - left) * tmp);
+            // 每次移动指针都会过滤掉一根柱子
+            // 无论是 left 移动还是 right 移动，横坐标都会减一
+            // 所以需要寻找两根柱子都很长的情况，这样乘积才会最大化
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return res;
+    }
+}
