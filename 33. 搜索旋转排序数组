@@ -1,0 +1,35 @@
+class Solution {
+    // 因为有序数组出现了旋转，所以根据其特性来寻找
+    // 也可以使用二分查找
+    public int search(int[] nums, int target) {
+        if (nums.length == 0) {
+            return -1;
+        }
+        int left = 0;
+        int right = nums.length - 1;
+        boolean tag1 = false;
+        boolean tag2 = false;
+        while (left <= right) {
+            if (tag1 && tag2) {
+                break;
+            }
+            if (nums[left] == target) {
+                return left;
+            }
+            if (nums[right] == target) {
+                return right;
+            }
+            if (nums[left] > target && !tag2) {
+                tag2 = true;
+            } else {
+                left++;
+            }
+            if (nums[right] < target && !tag1) {
+                tag1 = true;
+            } else {
+                right--;
+            }
+        }
+        return -1;
+    }
+}
