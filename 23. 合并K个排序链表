@@ -1,0 +1,39 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+ 
+ // 方法一，通过遍历所有链表的思想来解决
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode head = new ListNode(-1);
+        ListNode tail = head;
+        while (true) {
+            ListNode minNode = null;
+            int minPoint = -1;
+            // 寻找当前链表中节点值 val 最低的节点
+            for (int i = 0; i < lists.length; i++) {
+                // 注意：此处需要判断。可能出现某些元素位置链表遍历完的情况
+                if (lists[i] == null) {
+                    continue;
+                }
+                if (minNode == null || minNode.val > lists[i].val) {
+                    minNode = lists[i];
+                    minPoint = i;
+                }
+            }
+            // 为 -1 表示全部链表都遍历完了
+            if (minPoint == -1) {
+                break;
+            }
+            tail.next = minNode;
+            tail = tail.next;
+            lists[minPoint] = lists[minPoint].next;
+        }
+        return head.next;
+    }
+}
