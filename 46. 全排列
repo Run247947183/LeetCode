@@ -1,0 +1,31 @@
+class Solution {
+    // 回溯 + 深度优先搜索算法
+    public List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> permute(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        //标记已经加入 list 的数字
+        boolean[] tag = new boolean[nums.length];
+        find(nums, list, tag);
+        return res;
+    }
+    public void find(int[] nums, List<Integer> list, 
+    boolean[] tag) {
+        if (list.size() == nums.length) {
+            List<Integer> tmp = new ArrayList<>();
+            for (int num : list) {
+                tmp.add(num);
+            }
+            res.add(tmp);
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!tag[i]) {
+                list.add(nums[i]);
+                tag[i] = true;
+                find(nums, list, tag);
+                tag[i] = false;
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+}
