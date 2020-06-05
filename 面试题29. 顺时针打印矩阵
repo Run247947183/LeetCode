@@ -1,0 +1,40 @@
+class Solution {
+    public int[] spiralOrder(int[][] matrix) {
+        if (matrix.length == 0) {
+            return new int[0];
+        }
+        int[] res = new int[matrix.length * matrix[0].length];
+        int y = 0; // 纵坐标
+        int ySize = matrix.length - 1; // 纵坐标最大限度
+        int x = 0; // 横坐标
+        int xSize = matrix[0].length - 1; // 横坐标最大限度
+        int index = 0;
+        while (true) {
+            for (int i = x; i <= xSize; i++) {
+                res[index++] = matrix[y][i];
+            }
+            if (++y > ySize) {
+                break;
+            }
+            for (int i = y; i <= ySize; i++) {
+                res[index++] = matrix[i][xSize];
+            }
+            if (--xSize < x) {
+                break;
+            }
+            for (int i = xSize; i >= x; i--) {
+                res[index++] = matrix[ySize][i];
+            }
+            if (--ySize < y) {
+                break;
+            }
+            for (int i = ySize; i >= y; i--) {
+                res[index++] = matrix[i][x];
+            }
+            if (++x > xSize) {
+                break;
+            }
+        }
+        return res;
+    }
+}
