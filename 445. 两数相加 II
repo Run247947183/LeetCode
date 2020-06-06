@@ -13,26 +13,15 @@ class Solution {
         ListNode newHead = new ListNode(-1); // 新链表
         ListNode tail = newHead;
         int tmp = 0; // 统计进位
-        int res = 0; // 统计当前位置剩余数字大小
         boolean tag = false; // 判断 head1 是否为 null
         boolean tag1 = false; // 判断 head2 是否为 null
-        // 只要 head1 和 head2 还有不为 null 的就继续往下添加节点
-        while (!tag || !tag1) {
+        // 只要 head1 和 head2 还有不为 null 以及 tmp 进位不为 0 就继续往下添加节点
+        while (!tag || !tag1 || tmp != 0) {
             int sum = tmp;
-            if (!tag) {
-                sum += head1.val;
-            }
-            if (!tag1) {
-                sum += head2.val;
-            }
-            if (sum >= 10) {
-                tmp = sum / 10;
-                res = sum - tmp * 10;
-            } else {
-                res = sum;
-                tmp = 0;
-            }
-            tail.next = new ListNode(res);
+            sum += !tag ? head1.val : 0;
+            sum += !tag1 ? head2.val : 0; 
+            tail.next = new ListNode(sum % 10);
+            tmp = sum / 10;
             tail = tail.next;
             if (!tag) {
                 head1 = head1.next;
@@ -42,10 +31,6 @@ class Solution {
                 head2 = head2.next;
                 tag1 = head2 == null ? true : false;
             }
-        }
-        // 如果 tmp 不为 0，说明还有进位
-        if (tmp != 0) {
-            tail.next = new ListNode(tmp);
         }
         // 注意最后要返回新链表反转后的节点
         return helper(newHead.next);
@@ -61,5 +46,36 @@ class Solution {
             p = Next;
         }
         return prev;
+    }
+}
+
+方法二
+class Solution {
+    // 栈来解决：只要逆序就要想到栈方法解决
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> stack1 = new Stack<>();
+        Stack<Integer> stack2 = new Stack<>();
+        while (l1 != null) {
+            stack1.add(l1.val);
+            l1 = l1.next;
+        }
+        while (l2 != null) {
+            stack2.add(l2.val);
+            l2 = l2.next;
+        }
+        ListNode head = null;
+        int tmp = 0; // 进位数
+        int sum = 0;
+        while (!stack1.isEmpty() || !stack2.isEmpty() || tmp != 0) {
+            sum = tmp;
+            sum += stack1.isEmpty() ? 0 : stack1.pop();
+            sum += stack2.isEmpty() ? 0 : stack2.pop();
+            // 链表反转
+            ListNode node = new ListNode(sum % 10);
+            node.next = head;
+            head = node;
+            tmp = sum / 10; // 计算进位数字
+        }
+        return head;
     }
 }
