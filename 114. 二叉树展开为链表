@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return;
+        }
+        // 找到当前 root 节点左子节点的最右节点，假设为 cur
+        // 然后将 root 的右节点全部移到 cur 的右子节点
+        // 然后将 root = root.right，继续变量，查看是否还有节点存在左子树
+        // 如果存在，也是同样重复的做法
+        while (root != null) {
+            if (root.left == null) {
+                root = root.right;
+            } else {
+                TreeNode cur = root.left;
+                while (cur.right != null) {
+                    cur = cur.right;
+                }
+                cur.right = root.right;
+                root.right = root.left;
+                root.left = null;
+                root = root.right;
+            }
+        }
+    }
+}
