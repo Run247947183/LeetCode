@@ -1,0 +1,63 @@
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        if (x < 10) {
+            return true;
+        }
+        String s = String.valueOf(x);
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+方法二：不转换成字符串
+利用栈将其中一半的数字保存起来，然后进行比较判断
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0) {
+            return false;
+        }
+        if (x < 10) {
+            return true;
+        }
+        int location = 2; // 判断 x 数字的位数
+        while (Math.pow(10, location) <= x) {
+            location++;
+        }
+        boolean tag = location % 2 == 0 ? true : false; // 是否是偶数
+        int pos = location / 2; // 中间位置
+        int index = 0;
+        Stack<Integer> stack = new Stack<>();
+        // 从个位到中间位置为止的数字加入栈
+        while (true) {
+            if (index == pos) {
+                break;
+            }
+            stack.add(x % 10);
+            x /= 10;
+            index++;
+        }
+        if (!tag) {
+            // x 的位数为奇数，那么需要再往前一个位置
+            x /= 10;
+        }
+        // 开始进行回文数字的判断
+        while (x > 0 && !stack.isEmpty()) {
+            if ((x % 10) != stack.pop()) {
+                return false;
+            }
+            x /= 10;
+        }
+        return true;
+    }
+}
