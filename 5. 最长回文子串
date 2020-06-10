@@ -31,3 +31,44 @@ class Solution {
         return true;
     }
 }
+
+
+class Solution {
+    // 动态规划
+    // dp[i][j] 表示在 s 字符串中，从 i 到 j 的区域字符串是否是回文字符串
+    // dp 是 boolean 类型
+    // 初始化工作，当一维数组的下标和二维数组下标相同时，设置为 true
+    // 因为只有一个字母的字符串肯定是回文的
+    // 每次判断时，dp[i][j] = dp[i + 1][j - 1]，要判断 i 到 j 区间是不是回文的字符串
+    // 那么就判断 i + 1 到 j - 1 是不是回文的，前提是 i 和 j 位置字母相同的前提下
+    public String longestPalindrome(String s) {
+        int len = s.length();
+        if (len < 2) {
+            return s;
+        }
+        boolean[][] dp = new boolean[len][len];
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+        }
+        String res = s.charAt(0) + "";
+        char[] chars = s.toCharArray();
+        for (int j = 1; j < len; j++) {
+            for (int i = 0; i < j; i++) {
+                if (chars[j] != chars[i]) {
+                    dp[i][j] = false;
+                } else {
+                    if (j - i < 3) {
+                        // 只有两个字符，并且他俩相同，那么肯定是回文的
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+                if (dp[i][j] == true && (j - i + 1) > res.length()) {
+                    res = s.substring(i, j + 1);
+                }
+            }
+        }
+        return res;
+    }
+}
