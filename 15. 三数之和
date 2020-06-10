@@ -1,0 +1,49 @@
+class Solution {
+    // 双指针 + 二分查找思想
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (nums.length < 3) {
+            return res;
+        }
+        // 先对数组从小到大排序
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) {
+                // 因为已经排序好了
+                // 所以 nums[i] > 0 表示不可能再有和后面数相加为 0 的情况
+                return res;
+            }
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                // 表示 num[i] 的情况已经考虑过了
+                continue;
+            }
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                // 注意：体会这里的二分查找思想
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum == 0) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[left]);
+                    list.add(nums[right]);
+                    res.add(list);
+                    // 排除相同元素的情况
+                    while (left + 1 < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    while (right - 1 > left && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    left++;
+                    right--;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return res;
+    }
+}
