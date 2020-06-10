@@ -1,0 +1,58 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+        int max = 1;
+        for (int i = 0; i < s.length(); i++) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(s.charAt(i));
+            int j = i + 1;
+            for (; j < s.length(); j++) {
+                if (sb.toString().indexOf(s.charAt(j)) != -1) {
+                    max = Math.max(max, sb.length());
+                    break;
+                }
+                sb.append(s.charAt(j));
+            }
+            max = Math.max(max, sb.length());
+            if (j == s.length() - 1) {
+                break;
+            }
+        }
+        return max;
+    }
+}
+
+方法二：滑动窗口
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        if (s.length() == 1) {
+            return 1;
+        }
+        HashSet<Character> set = new HashSet<>();
+        int max = 0; // 记录最长连续不重复字串长度
+        int index = -1; // 用来记录目前 set 中不存在重复字母的最大位置
+        int size = s.length();
+        for (int i = 0; i < size; i++) {
+            if (i != 0) {
+                // 每次循环开始，都需要将 i - 1 位置的元素从 set 中清除
+                // 因为每次跳出 while 循环意味着 set 中存在重复的元素
+                // 所以要清除，一直清除到 set 中不存在 index + 1 位置的字母位置
+                set.remove(s.charAt(i - 1));
+            }
+            while (index + 1 < size && !set.contains(s.charAt(index + 1))) {
+                set.add(s.charAt(index + 1));
+                index++;
+            }
+            max = Math.max(max, index - i + 1);
+        }
+        return max;
+    }
+}
