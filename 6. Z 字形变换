@@ -1,0 +1,30 @@
+class Solution {
+    // 按之字形来添加
+    public String convert(String s, int numRows) {
+        if (numRows == 0) {
+            return "";
+        }
+        if (numRows == 1) {
+            return s;
+        }
+        int size = Math.min(numRows, s.length());
+        List<StringBuilder> res = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            res.add(new StringBuilder());
+        }
+        int pos = 0; // res 中 StringBuilder 的选择下标
+        boolean helper = false; // 辅助判断是往下一个 StringBuilder 切换，还是到达边界
+        for (char c : s.toCharArray()) {
+            res.get(pos).append(c);
+            if (pos == 0 || pos == size - 1) {
+                helper = !helper;
+            }
+            pos += helper ? 1 : -1; 
+        }
+        StringBuilder sb = new StringBuilder();
+        for (StringBuilder tmp : res) {
+            sb.append(tmp);
+        }
+        return sb.toString();
+    }
+}
