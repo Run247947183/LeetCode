@@ -1,0 +1,32 @@
+class Solution {
+    public int[] dailyTemperatures(int[] T) {
+        if (T == null || T.length == 0) {
+            return new int[T.length];
+        }
+        int[] dp = new int[T.length];
+        for (int i = T.length - 2; i >= 0; i--) {
+            if (T[i] < T[i + 1]) {
+                dp[i] = 1;
+                continue;
+            }
+            if (dp[i + 1] == 0) {
+                dp[i] = 0;
+            } else {
+                int j = i + 1 + dp[i + 1];
+                while (j < T.length) {
+                    if (T[i] < T[j]) {
+                        dp[i] = j - i;
+                        break;
+                    } else {
+                        if (dp[j] == 0) {
+                            dp[i] = 0;
+                            break;
+                        }
+                        j += dp[j];
+                    }
+                }
+            }
+        }
+        return dp;
+    }
+}
