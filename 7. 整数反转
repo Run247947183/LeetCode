@@ -1,0 +1,53 @@
+方法一：
+class Solution {
+    // 每次取 x 的最小位置的数，然后加入 cur
+    // 中间判断是否有越界
+    // cur 每次需要乘以 10 ，更新位置
+    public int reverse(int x) {
+        if (x >= Integer.MAX_VALUE || x <= Integer.MIN_VALUE) {
+            return 0;
+        }
+        int cur = 0;
+        while (x != 0) {
+            int tmp = x % 10;
+            x /= 10;
+            if (cur > Integer.MAX_VALUE / 10
+            || (cur == Integer.MAX_VALUE / 10 && tmp > 7)) {
+                return 0;
+            }
+            if (cur < Integer.MIN_VALUE / 10
+            || (cur == Integer.MIN_VALUE / 10 && tmp < -8)) {
+                return 0;
+            }
+            cur = cur * 10 + tmp;
+        }
+        return cur;
+    }
+}
+
+方法二：
+转换成 String 来处理
+class Solution {
+    public int reverse(int x) {
+        if(x<=-2147483648 || x >2147483647) return 0;
+        boolean tag = false;
+        if (x < 0) {
+            x = (-x);
+            tag = true;
+        }
+        String s = String.valueOf(x);
+        if (s.length() == 1) {
+            return x;
+        }
+        StringBuilder sb = new StringBuilder(s);
+        sb.reverse();
+        if (tag) {
+            sb.insert(0, "-");
+        }
+        long num = Long.valueOf(sb.toString());
+        if (num <= (long)Integer.MIN_VALUE || num >= (long)Integer.MAX_VALUE) {
+            return 0;
+        }
+        return (int)num;
+    }
+}
