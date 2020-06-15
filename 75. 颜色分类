@@ -1,0 +1,45 @@
+冒泡排序
+class Solution {
+    public void sortColors(int[] nums) {
+        for (int bound = 0; bound < nums.length; bound++) {
+            for (int cur = nums.length - 1; cur > bound; cur--) {
+                if (nums[cur - 1] > nums[cur]) {
+                    int tmp = nums[cur - 1];
+                    nums[cur - 1] = nums[cur];
+                    nums[cur] = tmp;
+                }
+            }
+        }
+    }
+}
+
+三指针
+class Solution {
+    // 双指针
+    // cur 表示当前下标位置元素，left 为左端下标，right 为右端下标
+    // 当 cur 为 0 时和 left 位置交换，并且 cur 和 left 下标++
+    // 当 cur 为 2 时和 right 位置交换，因为此时 right 位置元素可能为 0，所以 cur不能++
+    // left 用来移动 0 的情况，right 用来移动 2 的情况，中间为 1 时，cur++ 
+    public void sortColors(int[] nums) {
+        int cur = 0;
+        int left = 0;
+        int right = nums.length - 1;
+        while (cur <= right) {
+            if (nums[cur] == 0) {
+                swap(nums, cur, left);
+                left++;
+                cur++;
+            } else if (nums[cur] == 2) {
+                swap(nums, cur, right);
+                right--;
+            } else {
+                cur++;
+            }
+        }
+    }
+    public void swap(int[] nums, int x, int y) {
+        int tmp = nums[x];
+        nums[x] = nums[y];
+        nums[y] = tmp;
+    }
+}
