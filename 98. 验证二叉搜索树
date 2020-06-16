@@ -1,0 +1,59 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 按照二叉搜索树的性质
+    // 进行中序遍历，并且过程中判断是否不符合二叉搜素树的性质
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (root.left == null && root.right == null) {
+            return true;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        double tmp = - Double.MAX_VALUE;
+        while (true) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            if (stack.isEmpty()) {
+                break;
+            }
+            TreeNode cur = stack.pop();
+            if (cur.val <= tmp) {
+                return false;
+            }
+            tmp = cur.val;
+            root = cur.right;
+        }
+        return true;
+    }
+}
+
+// class Solution {
+//   public boolean isValidBST(TreeNode root) {
+//     Stack<TreeNode> stack = new Stack();
+//     double inorder = - Double.MAX_VALUE;
+
+//     while (!stack.isEmpty() || root != null) {
+//       while (root != null) {
+//         stack.push(root);
+//         root = root.left;
+//       }
+//       root = stack.pop();
+//       // 如果中序遍历得到的节点的值小于等于前一个 inorder，说明不是二叉搜索树
+//       if (root.val <= inorder) return false;
+//       inorder = root.val;
+//       root = root.right;
+//     }
+//     return true;
+//   }
+// }
