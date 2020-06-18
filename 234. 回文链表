@@ -1,0 +1,80 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 将链表中的值添加到数组中
+    // 在数组中通过双指针判断
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        List<Integer> list = new ArrayList<>();
+        ListNode cur = head;
+        while (cur != null) {
+            list.add(cur.val);
+            cur = cur.next;
+        }
+        int left = 0;
+        int right = list.size() - 1;
+        while (left < right) {
+            // 注意：此处需要通过 equals 判断，因为超过 -128 到 127 范围的话
+            // Integer 包装类会创建两个不同的对象，
+            // 所以需要通过 equals 方法判断 Integer 对象值的是否相同
+            if (!list.get(left).equals(list.get(right))) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+方法二：通过从中间位置反转链表，然后进行反转链表和前半段链表的判断
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        int len = size(head);
+        ListNode tmp = head;
+        for (int i = 0; i < (len / 2); i++) {
+            tmp = tmp.next;
+        }
+        ListNode Next = null;
+        ListNode newHead = null;
+        while (tmp != null) {
+            Next = tmp.next;
+            tmp.next = newHead;
+            newHead = tmp;
+            tmp = Next;
+        }
+        while (head != null && newHead != null) {
+            if (head.val != newHead.val) {
+                return false;
+            }
+            head = head.next;
+            newHead = newHead.next;
+        }
+        return true;
+    }
+    public int size(ListNode head) {
+        int size = 0;
+        while (head != null) {
+            size++;
+            head = head.next;
+        }
+        return size;
+    }
+}
