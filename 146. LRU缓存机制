@@ -1,0 +1,42 @@
+class LRUCache {
+    public int capacity = 0; // 记录最大容量上限
+    public Map<Integer, Integer> map = new LinkedHashMap<>();
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+    }
+    
+    public int get(int key) {
+        if (map.containsKey(key)) {
+            // 先将该 key 对应的 value 获取到
+            int value = map.get(key);
+            // 删除该 key 对应键值对
+            map.remove(key);
+            // 因为该键值对使用了，所以需要存到 map 的最后面，也就是最新的位置
+            map.put(key, value);
+            return value;
+        }
+        // 不存在该 key 则直接返回 -1
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        if (!map.containsKey(key)) {
+            if (map.size() == capacity) {
+                Iterator<Map.Entry<Integer, Integer>> iterator = 
+                map.entrySet().iterator();
+                iterator.next();
+                iterator.remove();
+            }
+        } else {
+            map.remove(key);
+        }
+        map.put(key, value);
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
