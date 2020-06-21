@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 注意最大路径和：节点+左子树最大和+右子树最大和
+    public int tag = Integer.MIN_VALUE; // 保存最大和
+    public int maxPathSum(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return root.val;
+        }
+        helper(root);
+        return tag;
+    }
+    public int helper(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        // 计算左子树最大和，注意要和 0 判断，小于 0 的话，就不加入最大和计算
+        int left = Math.max(helper(root.left), 0);
+        // 计算右子树最大和
+        int right = Math.max(helper(root.right), 0);
+
+        // 更新 tag
+        tag = Math.max(tag, (left + right + root.val));
+
+        // 此处返回的 root 节点 + 左子树或者右子树 的最大和
+        return root.val + Math.max(left, right);
+    }
+}
