@@ -1,0 +1,24 @@
+# LeetCode
+力扣
+class Solution {
+    // 每一步只有两种拿牌方法，一种是拿第一张，一种是拿最后一张
+    // 最大值要么是数组前 k 张，要么是数组后 k 张
+    // 要么是前面一张后面一张等
+    public int maxScore(int[] cardPoints, int k) {
+        int count = 0;
+        // 先算出前 k 张牌的总和
+        for (int i = 0; i < k; i++) {
+            count += cardPoints[i];
+        }
+        int max = count;
+        int right = cardPoints.length - 1;
+        // 开始从后 k 张牌计算
+        //分别减去前面一张牌加上后面一张牌
+        for (int i = k - 1; i >= 0; i--) {
+            count = count - cardPoints[i] + cardPoints[right];
+            right--;
+            max = Math.max(max, count);
+        }
+        return max;
+    }
+}
