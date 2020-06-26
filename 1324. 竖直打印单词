@@ -1,0 +1,38 @@
+# LeetCode
+力扣
+class Solution {
+    // 按照二维数组来一个个单词添加
+    public List<String> printVertically(String s) {
+        String[] str = s.split(" ");
+        int maxSize = 0;
+        for (String s1 : str) {
+            maxSize = Math.max(maxSize, s1.length());
+        }
+        char[][] chars = new char[maxSize][str.length];
+        for (int i = 0; i < str.length; i++) {
+            for (int j = 0; j < str[i].length(); j++) {
+                chars[j][i] = str[i].charAt(j);
+            }
+        }
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < chars.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            int pos = 0;
+            for (int j = 0; j < chars[i].length; j++) {
+                // 注意：char的默认值为'\u0000'
+                if (chars[i][j] == '\u0000') {
+                    sb.append(" ");
+                } else {
+                    sb.append(chars[i][j]);
+                    pos = j;
+                }
+            }
+            // 如果是没有空格情况就不需要添加
+            if (pos != chars[i].length - 1) {
+                sb.delete(pos + 1, chars[i].length);
+            }
+            list.add(sb.toString());
+        }
+        return list;
+    }
+}
