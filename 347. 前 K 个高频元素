@@ -1,0 +1,39 @@
+# LeetCode
+力扣
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        List<Point> list = new ArrayList<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            list.add(new Point(entry.getKey(), entry.getValue()));
+        }
+        PriorityQueue<Point> queue = new PriorityQueue<>(new Comparator<Point>(){
+            public int compare(Point p1, Point p2) {
+                return p1.core - p2.core;
+            }
+        });
+        for (int i = 0; i < list.size(); i++) {
+            queue.offer(list.get(i));
+            if (queue.size() > k) {
+                queue.poll();
+            }
+        }
+        int[] res = new int[k];
+        int index = 0;
+        while (!queue.isEmpty()) {
+            res[index++] = queue.poll().num;
+        }
+        return res;
+    }
+}
+class Point {
+    public int num;
+    public int core;
+    public Point(int num, int core) {
+        this.num = num;
+        this.core = core;
+    }
+}
