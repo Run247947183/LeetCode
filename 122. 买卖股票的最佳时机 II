@@ -1,0 +1,27 @@
+# LeetCode
+力扣
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length < 2) {
+            return 0;
+        }
+        int minBuy = prices[0];
+        int maxSale = prices[0];
+        int sum = 0;
+        int i = 0;
+        while (i < prices.length - 1) {
+            // 低谷
+            while (i < prices.length - 1 && prices[i] >= prices[i + 1]) {
+                i++;
+            }
+            minBuy = prices[i];
+            // 高谷
+            while (i < prices.length - 1 && prices[i] <= prices[i + 1]) {
+                i++;
+            }
+            maxSale = prices[i];
+            sum += maxSale - minBuy;
+        }
+        return sum;
+    }
+}
