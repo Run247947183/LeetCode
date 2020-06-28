@@ -1,0 +1,49 @@
+# LeetCode
+力扣
+class Solution {
+    // 暴力破解法
+    public int minSubArrayLen(int s, int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int minSize = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int j = i;
+            int count = 0;
+            while (j < nums.length) {
+                count += nums[j];
+                if (count >= s) {
+                    minSize = Math.min(minSize, (j - i + 1));
+                    break;
+                }
+                j++;
+            }
+        }
+        return minSize == Integer.MAX_VALUE ? 0 : minSize;
+    }
+}
+
+class Solution {
+    // 双指针做法
+    // left 和 right 起初都为 0 ，right 不断往右移动，每次添加 nums[right] 值
+    // 当 sum 大于 s 时，计算长度，并且 left++，然后sum -= nums[left]
+    public int minSubArrayLen(int s, int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int size = Integer.MAX_VALUE;
+        int sum = 0;
+        int left = 0;
+        int right = 0;
+        while (right < nums.length) {
+            sum += nums[right];
+            while (sum >= s) {
+                size = Math.min(size, right - left + 1);
+                sum -= nums[left];
+                left++;
+            }
+            right++;
+        }
+        return size == Integer.MAX_VALUE ? 0 : size;
+    }
+}
