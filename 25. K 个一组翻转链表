@@ -7,8 +7,9 @@
  * }
  */
 class Solution {
-    // 计算出一共要反转多少次
-    // 每次反转的时候，两个一反转
+    // 先计算链表长度，这样可以计算出每k个一旋转，一共要旋转多少次
+    // 通过一个带头节点来帮助旋转
+    // 每次反转的时候，k个一反转
     public ListNode reverseKGroup(ListNode head, int k) {
         int len = 0;
         ListNode tmp = head;
@@ -17,7 +18,7 @@ class Solution {
             tmp = tmp.next;
         }
         ListNode Next = null;
-        ListNode newHead = new ListNode(-1);
+        ListNode newHead = new ListNode(-1); // 添加带头节点 
         newHead.next = head;
         ListNode prev = newHead;
         ListNode cur = head;
