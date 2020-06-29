@@ -44,3 +44,45 @@ class Solution {
         arr[y] = tmp;
     }
 }
+
+
+class Solution {
+    // 快速算法
+    public int findKthLargest(int[] nums, int k) {
+        int left = 0;
+        int right = nums.length - 1;
+        int tag = nums.length - k;
+        while (true) {
+            int index = partition(nums, left, right);
+            if (index == tag) {
+                return nums[index];
+            } else if (index < tag) {
+                left = index + 1;
+            } else {
+                right = index - 1;
+            }
+        }
+    }
+
+    private int partition(int[] array, int left, int right) {
+        int baseIndex = right;
+        int baseValue = array[baseIndex];
+        while (left < right) {
+            while (left < right && array[left] <= baseValue) {
+                left++;
+            }
+            while (left < right && array[right] >= baseValue) {
+                right--;
+            }
+            swap(array, left, right);
+        }
+        swap(array, left, baseIndex);
+        return left;
+    }
+
+    private void swap(int[] array, int left, int baseIndex) {
+        int tmp = array[left];
+        array[left] = array[baseIndex];
+        array[baseIndex] = tmp;
+    }
+}
