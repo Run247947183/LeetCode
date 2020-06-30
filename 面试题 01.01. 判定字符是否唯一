@@ -1,0 +1,24 @@
+# LeetCode
+力扣
+方法一：使用数据结构 HashSet
+class Solution {
+    public boolean isUnique(String astr) {
+        Set<Character> set = new HashSet<>();
+        for (char c : astr.toCharArray()) {
+            set.add(c);
+        }
+        return astr.length() == set.size();
+    }
+}
+
+方法二：不适用额外的数据结构
+class Solution {
+    public boolean isUnique(String astr) {
+        for (char c : astr.toCharArray()) {
+            if (astr.indexOf(c) != astr.lastIndexOf(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
