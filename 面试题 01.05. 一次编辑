@@ -1,0 +1,42 @@
+# LeetCode
+力扣
+class Solution {
+    // 清楚主要判断正误思路
+    // 首先：排除特殊的，明显的不可能正确情况，一方字符串为 null，或者长度查大于 1
+    // 两个字符串长度只剩下相同，或者一个字符串长 1 的情况
+    // 只有一次避错机会，所以判断到某一处字符时，根据长度查来继续判断
+    // 遇到字符不同了，则如果长度相同，则两者前进 1，否则长 1 的字符串前进 1
+    // 如果再次遇到字符不同，则直接返回 false
+    public boolean oneEditAway(String first, String second) {
+        if (first == null || second == null) {
+            return false;
+        }
+        if (Math.abs(first.length() - second.length()) > 1) {
+            return false;
+        }
+        int res = first.length() - second.length();
+        int i = 0;
+        int j = 0;
+        boolean tag = false;
+        while (i < first.length() && j < second.length()) {
+            if (first.charAt(i) != second.charAt(j)) {
+                if (tag) {
+                    return false;
+                }
+                if (res == 0) {
+                    i++;
+                    j++;
+                } else if (res < 0) {
+                    j++;
+                } else {
+                    i++;
+                }
+                tag = true;
+            } else {
+                i++;
+                j++;
+            }
+        }
+        return true;
+    }
+}
