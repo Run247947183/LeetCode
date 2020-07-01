@@ -1,33 +1,40 @@
 class Solution {
-    // 因为有序数组出现了旋转，所以根据其特性来寻找
-    // 也可以使用二分查找
+    // 已知数组部分有序，原本是整体有序后来经过旋转
+    // 二分查找
+    // 旋转后的数组有两种情况：
+    // （1）nums[0] < nums[mid]，左部分有序，那么再次通过 target 在边界下标之间比较
+    // 判断是在左部分查找，还是在右部分查找
+    // （2）同样的，nums[0] < nums[mid] ，说明右部分有序
+    // 举例子：
+    // 1 2 3 4 5 6 7 可以大致分为两类，
+    // 第一类 2 3 4 5 6 7 1 这种，也就是 nums[start] <= nums[mid]。就是 2 <= 5。
+    // 这种情况下，前半部分有序。因此如果 nums[start] <=target<nums[mid]，则在前半部分找，否则去后半部分找。
+    // 第二类 6 7 1 2 3 4 5 这种，也就是 nums[start] > nums[mid]。就是 6 > 2。
+    // 这种情况下，后半部分有序。因此如果 nums[mid] <target<=nums[end]，则在后半部分找，否则去前半部分找。
     public int search(int[] nums, int target) {
-        if (nums.length == 0) {
+        if (nums == null || nums.length == 0) {
             return -1;
         }
         int left = 0;
         int right = nums.length - 1;
-        boolean tag1 = false;
-        boolean tag2 = false;
         while (left <= right) {
-            if (tag1 && tag2) {
-                break;
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
             }
-            if (nums[left] == target) {
-                return left;
-            }
-            if (nums[right] == target) {
-                return right;
-            }
-            if (nums[left] > target && !tag2) {
-                tag2 = true;
+            // 注意此处的等于是为了符合在数组只有两个元素，或者只剩下两个元素的情况
+            if (nums[left] <= nums[mid]) {
+                if (nums[left] <= target && target < nums[mid]) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
             } else {
-                left++;
-            }
-            if (nums[right] < target && !tag1) {
-                tag1 = true;
-            } else {
-                right--;
+                if (nums[mid] < target && target <= nums[right]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
             }
         }
         return -1;
