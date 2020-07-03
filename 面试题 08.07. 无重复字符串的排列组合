@@ -1,0 +1,43 @@
+# LeetCode
+力扣
+class Solution {
+    // 回溯算法
+    // 遍历 S 字符串，每个字母轮流固定到一个位置，例如字符串 abc
+    // 先让 a 固定到 0 位置，b 固定到 1 位置，c 固定到 2 位置
+    // 然后换着来固定位置，b 固定到 0 位置，a 固定到 1 位置，c 固定到 2 位置
+    // 或者 c 固定到 1 位置，a 固定到 2 位置，等等......
+    public List<String> list = new ArrayList<>();
+    public String[] permutation(String S) {
+        dfs(S.toCharArray(), 0);
+        String[] str = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            str[i] = list.get(i);
+        }
+        return str;
+    }
+    // pos 为每次 dfs 时固定的位置下标
+    // 第一次 dfs 的循环中，会依次将 a b c 三个字母固定到 0 位置
+    // 例如：第一次 dfs 固定 a 到 0 位置
+    // 那么第二次 dfs 固定 b 或者 c 到 1 位置
+    // 如果第一次 dfs 固定 b 到 0 位置
+    // 那么第二次 dfs 固定 a 或者 c 到 1 位置
+    // 如果第一次 dfs 固定 c 到 0 位置
+    // 那么第二次 dfs 固定 a 或者 b 到 1 位置
+    public void dfs(char[] chars, int pos) {
+        if (pos == chars.length - 1) {
+            list.add(new String(chars));
+            return;
+        }
+        for (int i = pos; i < chars.length; i++) {
+            // swap 切换固定位置的字母
+            swap(chars, i, pos);
+            dfs(chars, pos + 1);
+            swap(chars, i, pos);
+        }
+    }
+    public void swap(char[] chars, int x, int y) {
+        char c = chars[x];
+        chars[x] = chars[y];
+        chars[y] = c;
+    }
+}
