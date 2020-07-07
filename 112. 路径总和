@@ -1,0 +1,39 @@
+# LeetCode
+力扣
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int tag = 0;
+    public int count = 0;
+    public boolean res = false;
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) {
+            return false;
+        }
+        tag = sum;
+        helper(root);
+        return res;
+    }
+    public void helper(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null) {
+            if ((count + root.val) == tag) {
+                res = true;
+            }
+            return;
+        }
+        count += root.val;
+        helper(root.left);
+        helper(root.right);
+        count -= root.val;
+    }
+}
