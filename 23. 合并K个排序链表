@@ -37,3 +37,32 @@ class Solution {
         return head.next;
     }
 }
+
+// 方法二
+class Solution {
+    // 通过优先队列来建立最小堆
+    public ListNode mergeKLists(ListNode[] lists) {
+        Queue<ListNode> queue = new PriorityQueue<>(new Comparator<ListNode>(){
+            public int compare(ListNode t1, ListNode t2) {
+                return t1.val - t2.val;
+            }
+        });
+        for (ListNode l1 : lists) {
+            if (l1 == null) {
+                continue;
+            }
+            queue.offer(l1);
+        }
+        ListNode head = new ListNode(-1);
+        ListNode tail = head;
+        while (!queue.isEmpty()) {
+            ListNode node = queue.poll();
+            tail.next = node;
+            tail = tail.next;
+            if (node.next != null) {
+                queue.offer(node.next);
+            }
+        }
+        return head.next;
+    }
+}
