@@ -1,0 +1,29 @@
+# LeetCode
+力扣
+class Solution {
+    // 栈
+    // 遍历两次 Nums，因为涉及到循环，从最后一位数字开始往前遍历
+    // 如果当前栈为空，则 res[i] = -1;否则进行比较
+    // 如果栈顶元素小于等于res[i]，则将栈中元素pop，直到栈为空，或者栈顶元素大于res[i]
+    // 然后给 res[i] 赋值，并且将 nums[i] 入栈，让前面的数字继续比较
+    public int[] nextGreaterElements(int[] nums) {
+        int len = nums.length;
+        if (len == 0) {
+            return new int[0];
+        }
+        int[] res = new int[len];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 2 * (len - 1); i >=0; i--) {
+            while (!stack.isEmpty()) {
+                if (nums[i % len] >= stack.peek()) {
+                    stack.pop();
+                } else {
+                    break;
+                }
+            }
+            res[i % len] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(nums[i % len]);
+        }
+        return res;
+    }
+}
