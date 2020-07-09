@@ -1,0 +1,40 @@
+# LeetCode
+力扣
+// 暴力查找法
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int sum = 0;
+            for (int j = i; j < nums.length; j++) {
+                sum += nums[j];
+                if (sum == k) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+}
+
+// 哈希表
+class Solution {
+    // 假设end[i] 表示遍历到 nums 的 i 位置，从0 到 i 的和是 end[i]
+    // 那么如果 end[i] - end[j] == k ，说明存在连续子数组和为 k，就是i和j中间的子数组
+    // 注意：不需要建立 end 数组，因为每次和为之前和 + nums[i] 即可 
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int end = 0;
+        map.put(0, 1);
+        for (int i = 0; i < nums.length; i++) {
+            end += nums[i];
+            if (map.containsKey(end - k)) {
+                count += map.get(end - k);
+            }
+            // 增加当前 end 和的情况，以便后序查看该和情况是否存在
+            map.put(end, map.getOrDefault(end, 0) + 1);
+        }
+        return count;
+    }
+}
