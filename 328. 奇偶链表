@@ -1,0 +1,32 @@
+# LeetCode
+力扣
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    // 注意：这里的奇数和偶数指的是数组下标，而不是node的值，并且保持奇数和偶数相对顺序不变
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode oushu = head.next;
+        ListNode jishu = head;
+        ListNode newHead = head.next;
+        while (newHead != null && newHead.next != null) {
+            ListNode Next = newHead.next;
+            newHead.next = Next.next;
+            Next.next = oushu;
+            jishu.next = Next;
+            newHead = newHead.next;
+            jishu = jishu.next;
+        }
+        return head;
+    }
+}
