@@ -1,0 +1,41 @@
+# LeetCode
+力扣
+class Solution {
+    // 递归做法
+    public String str = null; // s 字符串的全局变量
+    public int index = 0; // 记录 s 字符串的下标位置
+    public String decodeString(String s) {
+        str = s;
+        return helper();
+    }
+    public String helper() {
+        if (index == str.length() || str.charAt(index) == ']') {
+            return "";
+        }
+        String res = "";
+        int times = 1;
+        char c = str.charAt(index);
+        if (Character.isDigit(c)) {
+            times = getTime(); // 计算循环次数
+            index++; // 过滤 '['
+            String tmp = helper(); // 找出括号中的字符串
+            index++; // 过滤 ']'
+            while(times > 0) {
+                res += tmp;
+                times--;
+            }
+        } else if (Character.isLetter(c)) {
+            // 如果是字母，则直接返回该字符串
+            res = String.valueOf(str.charAt(index++));
+        }
+        // 返回当前括号中字符串 * 数量，并且继续往下添加字符串
+        return res + helper();
+    }
+    public int getTime() {
+        int time = 0;
+        while (index < str.length() && Character.isDigit(str.charAt(index))) {
+            time = time * 10 + (str.charAt(index++) - '0'); 
+        }
+        return time;
+    }
+}
