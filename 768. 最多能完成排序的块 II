@@ -1,0 +1,43 @@
+# LeetCode
+力扣
+class Solution {
+    // 滑动窗口，利用 HashMap 做滑动窗口
+    public int maxChunksToSorted(int[] arr) {
+        int[] sort = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(sort);
+        // 计算距离可以划分成模块的步数
+        // 如果 steps 不为 0 ，表示还不能正确划分模块
+        int steps = 0; 
+        int count = 0; // 计算划分模块数量
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            int a = arr[i];
+            int b = sort[i];
+            map.put(a, map.getOrDefault(a, 0) + 1);
+            if (map.get(a) == 1) {
+                // 表示 a 数字第一次出现
+                steps++;
+            }
+            if (map.get(a) == 0) {
+                // 表示 a 数字已经在正确排序数组中出现了
+                steps--;
+            }
+            
+            map.put(b, map.getOrDefault(b, 0) - 1);
+            if (map.get(b) == -1) {
+                // 第一次出现在正确排序数组中
+                steps++;
+            }   
+            if (map.get(b) == 0) {
+                // 表示已经在 arr 原数组中出现过了
+                steps--;
+            }
+
+            // 前面的数字如果排序都能有序，所以可以划分模块了
+            if (steps == 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
