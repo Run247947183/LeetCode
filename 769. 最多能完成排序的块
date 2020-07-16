@@ -1,0 +1,16 @@
+# LeetCode
+力扣
+class Solution {
+    // 根据题目要求，尽可能多的划分模块，当每个数字在其正确下标下时，就划分
+    public int maxChunksToSorted(int[] arr) {
+        int count = 0;
+        int max = 0;
+        for (int i = 0; i < arr.length; i++) {
+            max = Math.max(max, arr[i]);
+            if (max == i) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
