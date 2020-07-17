@@ -1,0 +1,57 @@
+# LeetCode
+力扣
+class Solution {
+    // 二分查找思想
+    // 首先判断两个数组的整体长度,判断中位数的位置,例如一个长度为 3, 一个长度为 7
+    // 那么要找到第 5 个数字.进入转变为找两个有序数组第 k 个数
+    // 5 / 2 = 2,那么先找到每个数组的第 2 个数字,假设为 a 和 b
+    // 如果 a < b ,则排除 a 前面和 b 前面的数字
+    // 然后更换 a 的起始下标,重新开始计算
+    // 相反也是类似的,如果 a == b 那么可以归并到第一种情况里面
+    // 当两个数组长度之和 % 2 为偶数时,则类似的,先从两个数组找到前一个数字,再找到后一个
+    // 两个数字相加 / 2.0 就是最终的结果
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int len = len1 + len2;
+        if (len % 2 == 1) {
+            int k = len / 2; 
+            return (double)helper(nums1, nums2, k + 1);
+        } else {
+            int k1 = len / 2 - 1;
+            int k2 = len / 2;
+            double res = (helper(nums1, nums2, k1 + 1) + helper(nums1, nums2, k2 + 1)) / 2.0;
+            return res;
+        }
+    }
+    public int helper(int[] nums1, int[] nums2, int k) {
+        int index1 = 0;
+        int index2 = 0;
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        while (true) {
+            if (index1 == len1) {
+                return nums2[index2 + k - 1];
+            }
+            if (index2 == len2) {
+                return nums1[index1 + k - 1];
+            }
+            if (k == 1) {
+                return Math.min(nums1[index1], nums2[index2]);
+            }
+
+            int half = k / 2;
+            int pos1 = Math.min(len1, index1 + half) - 1;
+            int pos2 = Math.min(len2, index2 + half) - 1;
+            int indexValue1 = nums1[pos1];
+            int indexValue2 = nums2[pos2];
+            if (indexValue1 <= indexValue2) {
+                k -= (pos1 - index1 + 1);
+                index1 = pos1 + 1;
+            } else {
+                k -= (pos2 - index2 + 1);
+                index2 = pos2 + 1;
+            }
+        }
+    }
+}
