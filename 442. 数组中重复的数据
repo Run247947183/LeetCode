@@ -1,0 +1,17 @@
+class Solution {
+    // 因为每个元素的大小都小于数组的长度
+    // 根据这一个特点,将每个元素值作为下标查询,如果为负数表示,之前已经有相同元素出现过
+    // 如果不为负数,则将该位置的元素替换成负值
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            int index = Math.abs(nums[i]) - 1;
+            if (nums[index] < 0) {
+                list.add(index + 1);
+            } else {
+                nums[index] = -nums[index];
+            }
+        }
+        return list;
+    }
+}
