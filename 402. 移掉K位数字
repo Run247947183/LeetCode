@@ -1,0 +1,27 @@
+# LeetCode
+力扣
+class Solution {
+    // 在 k 的范围内，每次从头开始寻找第一个单调递减的数字，也就是找到第一个比后面一位数字大的数字，然后删除，接着从头开始重复
+    public String removeKdigits(String num, int k) {
+        if (k == 0) {
+            return num;
+        }
+        if (k == num.length()) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder(num);
+        for (int i = 0; i < k; i++) {
+            int j = 0;
+            for (; j < sb.length() - 1; j++) {
+                if (sb.charAt(j) > sb.charAt(j + 1)) {
+                    break;
+                }
+            }
+            sb.deleteCharAt(j);
+        }
+        while (sb.length() != 0 && sb.charAt(0) == '0') {
+            sb.deleteCharAt(0);
+        }
+        return sb.length() == 0 ? "0" : sb.toString();
+    }
+}
