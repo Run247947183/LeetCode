@@ -1,0 +1,33 @@
+# LeetCode
+力扣
+class Solution {
+    // 栈
+    // 先创建一个数组，数组保存的是从左到 i 最小的数
+    // 从右往左遍历，栈储存比 min[i] 大的数
+    // 假设当前数字为 nums[j] ,如果 nums[j] > min[j] && stack.peek() < nums[j]
+    // 则返回 true
+    public boolean find132pattern(int[] nums) {
+        int len = nums.length;
+        if (len < 3) {
+            return false;
+        }
+        int[] min = new int[len];
+        min[0] = nums[0];
+        for (int i = 1; i < len; i++) {
+            min[i] = Math.min(min[i - 1], nums[i - 1]);
+        }
+        Stack<Integer> stack = new Stack<>();
+        for (int j = len - 1; j > 0; j--) {
+            if (nums[j] > min[j]) {
+                while (!stack.isEmpty() && stack.peek() <= min[j]) {
+                    stack.pop();
+                }
+                if (!stack.isEmpty() && stack.peek() < nums[j]) {
+                    return true;
+                }
+                stack.push(nums[j]);
+            }
+        }
+        return false;
+    }
+}
