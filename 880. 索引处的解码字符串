@@ -1,0 +1,28 @@
+# LeetCode
+力扣
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        int len = S.length();
+        long size = 0;
+        for (char c : S.toCharArray()) {
+            if (Character.isDigit(c)) {
+                size *= (c - '0');
+            } else {
+                size++;
+            }
+        }
+        for (int i = len - 1; i >= 0; i--) {
+            char c = S.charAt(i);
+            K %= size;
+            if (K == 0 && Character.isLetter(c)) {
+                return c + "";
+            }
+            if (Character.isDigit(c)) {
+                size = size / (S.charAt(i) - '0');
+            } else {
+                size--;
+            }
+        }
+        return null;
+    }
+}
