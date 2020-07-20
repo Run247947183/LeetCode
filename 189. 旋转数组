@@ -1,0 +1,25 @@
+# LeetCode
+力扣
+
+暴力解法：将后面 K 个数字移动到前 k 位置
+
+反转解法
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int len = nums.length;
+        k = k % len;
+        reverse(nums, 0, len - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, len - 1);
+    }
+    public void reverse(int[] nums, int left, int right) {
+        int tmp = 0;
+        while (left < right) {
+            tmp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = tmp;
+            left++;
+            right--;
+        }
+    }
+}
