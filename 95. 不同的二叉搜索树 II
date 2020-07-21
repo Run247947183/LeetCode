@@ -1,0 +1,52 @@
+# LeetCode
+力扣
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // 递归
+    // 一颗二叉搜索树特点，根节点大于左子树，小于右子树
+    // 那么假设当前根节点为 i ，则左子树范围是（1，i - 1），右子树范围是（i + 1，n）
+    // 分别再从左子树和右子树中找对应的节点
+    // 然后将左子树和右子树的节点进行匹配，构成当前二叉搜索树
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) {
+            return new LinkedList<TreeNode>();
+        } else {
+            return getTrees(1, n);
+        }
+    }
+    public List<TreeNode> getTrees(int left, int right) {
+        List<TreeNode> res = new LinkedList<>();
+        if (left > right) {
+            res.add(null);
+            return res;
+        }
+        for (int i = left; i <= right; i++) {
+            List<TreeNode> leftTrees = getTrees(left, i - 1);
+            List<TreeNode> rightTrees = getTrees(i + 1, right);
+
+            for (TreeNode leftTree : leftTrees) {
+                for (TreeNode rightTree : rightTrees) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = leftTree;
+                    root.right = rightTree;
+                    res.add(root);
+                }
+            }
+        }
+        return res;
+    }
+}
