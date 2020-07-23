@@ -1,0 +1,45 @@
+# LeetCode
+力扣
+import java.util.*;
+
+class TreeNode {
+    public char val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(char val) {
+        this.val = val;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        while (in.hasNextLine()) {
+            String s = in.nextLine();
+            TreeNode root = buildTree(s);
+            inorder(root);
+            System.out.println(sb.toString());
+        }
+    }
+    public static int index = 0;
+    public static TreeNode buildTree(String s) {
+        if (s.charAt(index) == '#') {
+            return null;
+        }
+        TreeNode root = new TreeNode(s.charAt(index));
+        index++;
+        root.left = buildTree(s);
+        index++;
+        root.right = buildTree(s);
+        return root;
+    }
+    public static StringBuilder sb = new StringBuilder();
+    public static void inorder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorder(root.left);
+        sb.append(root.val + " ");
+        inorder(root.right);
+    }
+}
