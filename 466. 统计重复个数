@@ -1,0 +1,40 @@
+# LeetCode
+力扣
+class Solution {
+    public int getMaxRepetitions(String s1, int n1, String s2, int n2) {
+        int len1 = s1.length();
+        int len2 = s2.length();
+        char[] chars1 = s1.toCharArray();
+        char[] chars2 = s2.toCharArray();
+        int count1 = 0;// 记录经历了几次 s1
+        int count2 = 0;// 记录经历了几次 s2
+        int pos = 0; // 当前 s2 的位置
+        Map<Integer, int[]> map = new HashMap<>();
+        while (count1 < n1) {
+            for (int i = 0; i < len1; i++) {
+                if (chars1[i] == chars2[pos]) {
+                    pos++;
+                }
+                if (pos == len2) {
+                    count2++;
+                    pos = 0;
+                }
+            }
+            count1++;
+            if (!map.containsKey(pos)) {
+                // 记录当前的状态
+                map.put(pos, new int[]{count1, count2});
+            } else {
+                // 剪枝
+                // map 中出现 pos 的情况，说明发生了循环
+                int[] arr = map.get(pos);
+                int cirecle1 = count1 - arr[0];// 出现一次循环需要经历几次 s1
+                int cirecle2 = count2 - arr[1];// 出现一次循环需要经历几次 s2
+                // 更新
+                count2 += ((n1 - count1) / cirecle1) * cirecle2;
+                count1 += ((n1 - count1) / cirecle1) * cirecle1;
+            }
+        }
+        return count2 / n2;
+    }
+}
