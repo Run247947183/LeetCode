@@ -1,0 +1,54 @@
+# LeetCode
+力扣
+class Solution {
+    public List<String> res = new ArrayList<>();
+    public List<String> list = new ArrayList<>();
+    public List<String> word;
+    public String endWord;
+    public boolean[] tag;
+    public List<String> findLadders(String beginWord, String endWord, List<String> wordList) {
+        this.endWord = endWord;
+        word = wordList;
+        tag = new boolean[wordList.size()];
+        dfs(beginWord);
+        return res; 
+    }
+    public void dfs(String s) {
+        list.add(s);
+        Queue<String> queue = helper(s);
+        while (!queue.isEmpty()) {
+            String str = queue.poll();
+            if (str.equals(endWord)) {
+                list.add(str);
+                res = new ArrayList(list);
+                return;
+            }
+            dfs(str);
+            list.remove(list.size() - 1);
+        }
+    }
+    // 找到和 wordList 字典中和当前字符串 s 只差一个字母的字符串
+    public Queue<String> helper(String s) {
+        Queue<String> queue = new LinkedList<>();
+        for (int i = 0; i < word.size(); i++) {
+            int time = 0;
+            String tmp = word.get(i);
+            if (tag[i]) {
+                continue;
+            }
+            for (int j = 0; j < s.length(); j++) {
+                if (s.charAt(j) != tmp.charAt(j)) {
+                    time++;
+                }
+                if (time > 1) {
+                    break;
+                }
+            }
+            if (time == 1) {
+                queue.offer(tmp);
+                tag[i] = true;
+            }
+        }
+        return queue;
+    }
+}
