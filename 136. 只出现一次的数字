@@ -1,0 +1,13 @@
+# LeetCode
+力扣
+class Solution {
+    // ^ 异或操作：32 位二进制中两个相同的数字结果为 0，不同为 1
+    // 所以出现两次的数字都会相互抵消，最终结果只会留下只出现一次的数字
+    public int singleNumber(int[] nums) {
+        int res = 0;
+        for (int num : nums) {
+            res ^= num;
+        }
+        return res;
+    }
+}
