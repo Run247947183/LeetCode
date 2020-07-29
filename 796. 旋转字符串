@@ -1,0 +1,24 @@
+# LeetCode
+力扣
+class Solution {
+    public boolean rotateString(String A, String B) {
+        if ((A.length() == 0 && B.length() == 0)|| (A == null && B == null)) {
+            return true;
+        } 
+        if (A == null || B == null || A.length() != B.length()) {
+            return false;
+        }
+        A = A + A;
+        for (int i = 0; i < A.length(); i++) {
+            if (i + B.length() >= A.length()) {
+                return false;
+            }
+            if (A.charAt(i) == B.charAt(0)) {
+                if (A.substring(i, i + B.length()).equals(B)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
