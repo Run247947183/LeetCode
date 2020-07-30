@@ -1,0 +1,46 @@
+# LeetCode
+力扣
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        if (arr == null || k == 0 || arr.length == 0) {
+            return new int[0];
+        }
+        tag = k;
+        quickSort(arr, 0, arr.length - 1);
+        return res;
+    }
+    public int[] res;
+    public int tag;
+    public void quickSort(int[] arr, int left, int right) {
+        if (left > right) {
+            return;
+        }
+        int pos = partition(arr, left, right);
+        if (pos == tag) {
+            res = Arrays.copyOf(arr, pos);
+            return;
+        }
+        quickSort(arr, left, pos - 1);
+        quickSort(arr, pos + 1, right);
+    }
+    public int partition(int[] arr, int left, int right) {
+        int baseIndex = right;
+        int baseValue = arr[baseIndex];
+        while (left < right) {
+            while (left < right && arr[left] <= baseValue) {
+                left++;
+            }
+            while (left < right && arr[right] >= baseValue) {
+                right--;
+            }
+            swap(arr, left, right);
+        }
+        swap(arr, left, baseIndex);
+        return left;
+    }
+    public void swap(int[] arr, int x, int y) {
+        int tmp = arr[x];
+        arr[x] = arr[y];
+        arr[y] = tmp;
+    }
+}
