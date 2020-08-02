@@ -22,19 +22,18 @@ class Solution {
         // 然后将 root 的右节点全部移到 cur 的右子节点
         // 然后将 root = root.right，继续变量，查看是否还有节点存在左子树
         // 如果存在，也是同样重复的做法
-        while (root != null) {
-            if (root.left == null) {
-                root = root.right;
-            } else {
-                TreeNode cur = root.left;
-                while (cur.right != null) {
-                    cur = cur.right;
+        while (cur != null) {
+            if (cur.left != null) {
+                TreeNode Next = cur.left;
+                TreeNode nextRight = Next;
+                while (nextRight.right != null) {
+                    nextRight = nextRight.right;
                 }
-                cur.right = root.right;
-                root.right = root.left;
-                root.left = null;
-                root = root.right;
+                nextRight.right = cur.right;
+                cur.left = null;
+                cur.right = Next;
             }
+            cur = cur.right;
         }
     }
 }
