@@ -1,0 +1,41 @@
+# LeetCode
+力扣
+class Solution {
+    public String tictactoe(String[] board) {
+        int zong = 0; // 判断当前行
+        int heng = 0; // 判断当前列
+        int left = 0; // 判断左对角线
+        int right = 0; // 判断右对角线
+        int len = board.length;
+        boolean tag = false; // 判断是否有空
+        for (int y = 0; y < len; y++) {
+            heng = 0;
+            zong = 0;
+            for (int x = 0; x < board[0].length(); x++) {
+                heng += (int)board[y].charAt(x);
+                zong += (int)board[x].charAt(y);
+                if (board[y].charAt(x) == ' ') {
+                    tag = true;
+                }
+            }
+            if (heng == (int)'X' * len || zong == (int)'X' * len) {
+                return "X";
+            }
+            if (zong == (int)'O' * len || heng == (int)'O' * len) {
+                return "O";
+            }
+            left += (int)board[y].charAt(y);
+            right += (int)board[y].charAt(len - y - 1);
+        }
+        if (left == (int)'X' * len || right == (int)'X' * len) {
+            return "X";
+        }
+        if (right == (int)'O' * len || left == (int)'O' * len) {
+            return "O";
+        }
+        if (tag) {
+            return "Pending";
+        }
+        return "Draw";
+    }
+}
