@@ -1,0 +1,37 @@
+# LeetCode
+力扣
+class Solution {
+    // 深度优先搜索算法 + HashMap + HashSet
+    public boolean findWhetherExistsPath(int n, int[][] graph, int start, int target) {
+        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+        for (int i = 0; i < graph.length; i++) {
+            if (map.containsKey(graph[i][0])) {
+                map.get(graph[i][0]).add(graph[i][1]);
+            } else {
+                HashSet<Integer> set = new HashSet<>();
+                set.add(graph[i][1]);
+                map.put(graph[i][0], set);
+            }
+        }
+        HashSet<Integer> set = map.get(start);
+        if (set == null || set.isEmpty()) {
+            return false;
+        }
+        return helper(map, start, target);   
+    }
+    public boolean helper(HashMap<Integer, HashSet<Integer>> map, int start, int target) {
+        if (start == target) {
+            return true;
+        }
+        HashSet<Integer> set = map.get(start);
+        if (set == null || set.isEmpty()) {
+            return false;
+        }
+        for (Integer num : set) {
+             if (helper(map, num, target)) {
+                 return true;
+             }
+        }
+        return false;
+    }
+}
