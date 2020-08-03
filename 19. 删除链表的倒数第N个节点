@@ -7,17 +7,15 @@
  * }
  */
 class Solution {
-    // 双指针解决
-    // 注意：要设置一个头节点，避免一些特殊情况
+    // 双指针，通过一次遍历完成，不需要知道链表长度
+    // 让第一个指针先走 n + 1 步
+    // 让两个指针开始一起走，直到第一个指针为 null 为止
+    // 此时第二个指针为倒数第 n 个节点的前一个位置
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        if (head == null) {
-            return null;
-        }
         ListNode newHead = new ListNode(-1);
         newHead.next = head;
         ListNode first = newHead;
         ListNode second = newHead;
-        // 先让 first 走到需要删除指针的位置
         for (int i = 0; i <= n; i++) {
             first = first.next;
         }
@@ -26,6 +24,34 @@ class Solution {
             second = second.next;
         }
         second.next = second.next.next;
+        return newHead.next;
+    }
+}
+
+// 单指针，先遍历得到链表的长度
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        int len = 0;
+        ListNode tmp = head;
+        while (tmp != null) {
+            tmp = tmp.next;
+            len++;
+        }
+        ListNode newHead = new ListNode(-1);
+        newHead.next = head;
+        ListNode cur = newHead;
+        for (int i = 0; i < (len - n); i++) {
+            cur = cur.next;
+        }
+        cur.next = cur.next.next;
         return newHead.next;
     }
 }
