@@ -4,39 +4,38 @@ class Solution {
     // 如何将 x 位置往后的数按照升序排列
     // 题目意思是：找到最小的下一个排列，下一个排列意思要比当前排列组合起来的数大
     // 并且是下一个，所以要招最小的
+    class Solution {
     public void nextPermutation(int[] nums) {
-        if (nums.length <= 1) {
+        if (nums.length < 2) {
             return;
         }
-        int n = nums.length - 2;
-        while (n >= 0 && nums[n + 1] <= nums[n]) {
-            n--;
+        int pos = nums.length - 2;
+        while (pos >= 0 && nums[pos + 1] <= nums[pos]) {
+            pos--;
         }
-        if (n >= 0) {
-            int j = nums.length - 1;
-            while (j >= 0 && nums[j] <= nums[n]) {
-                j--;
+        if (pos >= 0) {
+            int i = pos + 1;
+            while (i < nums.length && nums[i] > nums[pos]) {
+                i++;
             }
-            swap(nums, j, n);
+            swap(nums, pos, i - 1);
         }
-        bubbleSort(nums, n + 1);
+        bubbleSort(nums, pos + 1);
     }
-    public void bubbleSort(int[] nums, int start) {
-        for (int i = start; i < nums.length; i++) {
-            for (int j = nums.length - 1; j > i; j--) {
-                if (nums[j - 1] > nums[j]) {
-                    swap(nums, j - 1, j);
+    public void bubbleSort(int[] arr, int start) {
+        for (int i = start; i < arr.length; i++) {
+            for (int j = arr.length - 1; j > i; j--) {
+                if (arr[j - 1] > arr[j]) {
+                    swap(arr, j - 1, j);
                 }
             }
         }
     }
-    public void swap(int[] nums, int x, int y) {
-        int tmp = nums[x];
-        nums[x] = nums[y];
-        nums[y] = tmp;
-    }
-    
+    public void swap(int[] arr, int x, int y) {
+        int tmp = arr[x];
+        arr[x] = arr[y];
+        arr[y] = tmp;
+    } 
 }
-
 
     
