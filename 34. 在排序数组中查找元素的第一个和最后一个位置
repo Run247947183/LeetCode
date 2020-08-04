@@ -1,0 +1,35 @@
+# LeetCode
+力扣
+class Solution {
+    // 二分查找思想
+    // 注意细节，边界值处理
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+        if (nums == null || nums.length == 0) {
+            return res;
+        }
+        // leftPos 为 target 的最小位置
+        int leftPos = helper(nums, target, true);
+        if (leftPos == nums.length || nums[leftPos] != target) {
+            return res;
+        }
+        res[0] = leftPos;
+        res[1] = helper(nums, target, false) - 1;
+        return res;
+    }
+    // isLeft 表示现在寻找的是 target 的最小位置还是最大位置
+    // isLeft 为 true 表示寻找其最小位置，否则为最大位置
+    public int helper(int[] nums, int target, boolean isLeft) {
+        int left = 0;
+        int right = nums.length;
+        while (left < right) {
+            int mid = (right + left) / 2;
+            if (nums[mid] > target || (isLeft && nums[mid] == target)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
