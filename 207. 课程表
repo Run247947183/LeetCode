@@ -1,0 +1,50 @@
+# LeetCode
+力扣
+class Solution {
+    // 深度优先搜索算法
+    // 想要学习一门必修课之前，需要判断能不能先学习其所需要的先修课
+    // 然后深度的去判断先修课能不能学习，如果存在一个环的情况，例如：
+    // 学习 1 需要先学习 0，然后判断能不能学习 0，结果学习 0 需要先学习 1
+    // 这样就是一个死循环，所以无法学习课程
+    // 这个过程为了剪枝，需要通过一个数组来标记之前能学习或者不能学习的课程
+    // 这样在下一次判断的时候，能够快捷很多
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // 标记数组
+        int[] books = new int[numCourses];
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = 0; i < numCourses; i++) {
+            list.add(new ArrayList<>());
+        }
+        for (int[] arr : prerequisites) {
+            list.get(arr[0]).add(arr[1]);
+        }
+        for (int i = 0; i < numCourses; i++) {
+            if (!dfs(list, books, i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean dfs(List<List<Integer>> list, int[] books, int i) {
+        if (books[i] == -1) {
+            // 表示 i 课程能够被成功学习
+            return true;
+        }
+        if (books[i] == 1) {
+            // 表示 i 课程还在本次课程是否能学习的深度判断中
+            // 所以出现了死循环，则直接返回无法学习 i 
+            return false;
+        }
+        // 1 表示 i 课程正在判断是否能学习
+        books[i] = 1;
+        for (Integer tag : list.get(i)) {
+            // 开始深度递归，判断学习 i 所需要先学习的 tag 课程能否学习
+            if (!dfs(list, books, tag)) {
+                return false;
+            }
+        }
+        // 判断成功后，-1 表示 i 课程能够被学习成功
+        books[i] = -1;
+        return true;
+    }
+}
