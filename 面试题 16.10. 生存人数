@@ -1,0 +1,30 @@
+# LeetCode
+力扣
+class Solution {
+    // 通过数组来保存哪一个年份生存和死亡的人数
+    // 之所以要 102 长度，是因为假如 2000 年死亡，那么 2000 这个人还是计入生存
+    // 只有 2001 年才算死亡，所以数组长度要 + 1
+    public int maxAliveYear(int[] birth, int[] death) {
+        int[] lives = new int[102];
+        for (int num : birth) {
+            lives[num - 1900]++;
+        }
+        for (int num : death) {
+            lives[num - 1900 + 1]--;
+        }
+        // now 表示计算当前 i 位置生存的人数
+        // 也就是当前 lives[i] + 之前的人数情况
+        int[] now = new int[102];
+        now[0] = lives[0];
+        int minYear = 0; // 表示生存人数最大，年份最小的年份
+        int maxLives = Integer.MIN_VALUE; // 表示最大的生存人数
+        for (int i = 1; i < 102; i++) {
+            now[i] = lives[i] + now[i - 1];
+            if (maxLives < now[i]) {
+                minYear = 1900 + i;
+                maxLives = now[i];
+            }
+        }
+        return minYear;
+    }
+}
