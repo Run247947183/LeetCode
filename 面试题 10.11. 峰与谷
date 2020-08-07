@@ -1,0 +1,17 @@
+# LeetCode
+力扣
+class Solution {
+    // 看清楚题目的本质
+    // 峰和谷交替，但是没有说明必须先是谷或者先是峰
+    // 只要判断前一个位置和当前位置元素的关系，并且判断当且位置应该是峰或者是谷即可
+    public void wiggleSort(int[] nums) {
+        for (int i = 1; i < nums.length; i++) {
+            if ((i % 2 == 0 && nums[i - 1] > nums[i]) 
+            || (i % 2 != 0 && nums[i - 1] < nums[i])) {
+                int tmp = nums[i];
+                nums[i] = nums[i - 1];
+                nums[i - 1] = tmp;
+            } 
+        }
+    }
+}
