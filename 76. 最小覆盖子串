@@ -1,0 +1,57 @@
+# LeetCode
+力扣
+class Solution {
+    // 滑动窗口
+    // tMap 保存 t 字符串中的字母情况
+    public Map<Character, Integer> tMap = new HashMap<>();
+    // sMap 作为当前遍历，保存的字母情况，也就是滑动窗口的情况
+    public Map<Character, Integer> sMap = new HashMap<>();
+    public String minWindow(String s, String t) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            tMap.put(c, tMap.getOrDefault(c, 0) + 1);
+        }
+        int left = 0; // 滑动窗口的左位置
+        int right = 0; // 滑动窗口的右位置
+        String res = ""; // 保存最终的字符串
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            if (tMap.containsKey(c)) {
+                // 如果当前字母在 tMap 中有，那么就需要加入 sMap 中
+                sMap.put(c, sMap.getOrDefault(c, 0) + 1);
+            }
+            while (isContains()) {
+                if (res.equals("")) {
+                    // 第一次找到全部包含 t 字符串的情况
+                    res = s.substring(left, right + 1);
+                } else {
+                    // 发现更短字符串的情况
+                    if (res.length() > (right - left + 1)) {
+                        res = s.substring(left, right + 1);
+                    }
+                }
+                // 移动滑动窗口的左边，如果滑动窗口 sMap 中包含该字母，则需要减去个数
+                if (sMap.containsKey(s.charAt(left))) {
+                    sMap.put(s.charAt(left), sMap.get(s.charAt(left)) - 1);
+                }
+                left++;
+            }
+            right++;
+        }
+        return res;
+    }
+    // 判断 sMap 滑动窗口中保存的字母有没有全部包含 tMap 中字母
+    public boolean isContains() {
+        for (Map.Entry<Character,Integer> entry : tMap.entrySet()) {
+            char c = entry.getKey();
+            Integer times = entry.getValue();
+            if (sMap.getOrDefault(c, 0) < times) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
