@@ -1,25 +1,12 @@
-冒泡排序
 class Solution {
-    public void sortColors(int[] nums) {
-        for (int bound = 0; bound < nums.length; bound++) {
-            for (int cur = nums.length - 1; cur > bound; cur--) {
-                if (nums[cur - 1] > nums[cur]) {
-                    int tmp = nums[cur - 1];
-                    nums[cur - 1] = nums[cur];
-                    nums[cur] = tmp;
-                }
-            }
-        }
-    }
-}
-
-三指针
-class Solution {
-    // 双指针
-    // cur 表示当前下标位置元素，left 为左端下标，right 为右端下标
-    // 当 cur 为 0 时和 left 位置交换，并且 cur 和 left 下标++
-    // 当 cur 为 2 时和 right 位置交换，因为此时 right 位置元素可能为 0，所以 cur不能++
-    // left 用来移动 0 的情况，right 用来移动 2 的情况，中间为 1 时，cur++ 
+    // 三指针法
+    // cur 指针指向 1 ，left 指针指向 0，right 指针指向 2
+    // left 只有确保 nums[left] 是 0 ，才会往右移动
+    // right 只有确保 nums[right] 是 2，才会往左移动
+    // cur 遇到 1 则往前移动
+    // cur 会从 0 号位置开始遍历，也就是说 cur 左边的元素都确保是 0 或者 1
+    // left 的位置的左边确保都是 0，当前 left 位置一定是 1
+    // right 的位置右边确保都是 2 ，当前位置可能是 1 也可能是 0 
     public void sortColors(int[] nums) {
         int cur = 0;
         int left = 0;
@@ -27,10 +14,14 @@ class Solution {
         while (cur <= right) {
             if (nums[cur] == 0) {
                 swap(nums, cur, left);
+                // 只要确保 nums[left] 位置是 0 了，left 就可以往前移动
                 left++;
+                // 此时 cur++,即使换过来的 nums[left] 是 1 也是正确的
                 cur++;
             } else if (nums[cur] == 2) {
                 swap(nums, cur, right);
+                // 此时 cur 不能移动，因为不知道换过来的 nums[right] 是什么值
+                // 还要重新对当前位置的值进行判断
                 right--;
             } else {
                 cur++;
