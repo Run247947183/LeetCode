@@ -1,0 +1,48 @@
+# LeetCode
+力扣
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 归并排序
+    // 将链表分成一半，然后再在左右一半继续递归的划分一半，直到只有一个节点为止
+    // 然后开始对左右部分节点进行排序，返回一个合并的排序号的链表
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            // 只有一个节点就停止划分
+            return head;
+        }        
+        // 将当前链表划分成一半
+        ListNode fast = head.next;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode tmp = slow.next;
+        slow.next = null;
+        // 递归划分
+        ListNode left = sortList(head);
+        ListNode right = sortList(tmp);
+        ListNode newHead = new ListNode(-1);
+        ListNode tail = newHead;
+        // 合并 left 和 right 链表
+        while (left != null && right != null) {
+            if (left.val < right.val) {
+                tail.next = left;
+                left = left.next;
+            } else {
+                tail.next = right;
+                right = right.next;
+            }
+            tail = tail.next;
+        }
+        tail.next = left == null ? right : left;
+        return newHead.next;
+    }
+}
