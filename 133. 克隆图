@@ -1,0 +1,73 @@
+# LeetCode
+力扣
+深度优先搜索算法
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+class Solution {
+    // 深度优先搜索算法
+    // 先复制当前 node 节点，用 HashMap 储存之前克隆过的 node 节点
+    // 遇到储存过的直接返回，否则重新创建当前节点的新克隆
+    // 然后在 node.neighbors 列表中依次将节点的克隆设置到 newNode 中
+    public Map<Node, Node> map = new HashMap<>();
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return node;
+        }
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+        Node newNode = new Node(node.val, new ArrayList<>());
+        map.put(node, newNode);
+        for (Node neighbor : node.neighbors) {
+            newNode.neighbors.add(cloneGraph(neighbor));
+        }
+        return newNode;
+    }
+}
+
+// 方法二：广度优先搜索算法
+
+class Solution {
+    // 广度优先搜索算法
+    public Node cloneGraph(Node node) {
+        if (node == null) {
+            return node;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(node);
+        HashMap<Node, Node> map = new HashMap<>();
+        map.put(node, new Node(node.val, new ArrayList<>()));
+        while (!queue.isEmpty()) {
+            Node cur = queue.poll();
+            for (Node neighbor : cur.neighbors) {
+                if (!map.containsKey(neighbor)) {
+                    map.put(neighbor, new Node(neighbor.val, new ArrayList<>()));
+                    queue.offer(neighbor);
+                }
+                map.get(cur).neighbors.add(map.get(neighbor));
+            }
+        }
+        return map.get(node);
+    }
+}
