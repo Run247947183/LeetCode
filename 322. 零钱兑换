@@ -27,3 +27,33 @@ class Solution {
         return f[amount] == Integer.MAX_VALUE ? -1 : f[amount];
     }
 }
+
+相同的动态思想，不同的做法
+class Solution {
+    // 动态规划
+    // 状态:dp[i] 表示总金额为 i 的情况下，最小的硬币数量
+    // 转移方程：dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+    // 前提是：i >= coins[j]
+    // 初始化：dp[0] 为 0，因为总金额为 0 则不需要 0 个银币即可
+    public int coinChange(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        int[] dp = new int[amount + 1];
+        int max = amount + 1;
+        // dp[i] 为 amount + 1，最多硬币数量的情况，就是 coins[j] == 1
+        // 也就是 1 的硬币数量，那么大于这个值，就为了来进行判断
+        // 之所以不取Intege.MAX_VALUE，是因为最大值 + 1后变为 Integer.MIN_VALUE
+        // 最后无法通过 Math.min 来进行最小值的查找
+        Arrays.fill(dp, max);
+        dp[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if (i >= coins[j]) {
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        return dp[amount] == max ? -1 : dp[amount]; 
+    }
+}
