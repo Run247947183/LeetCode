@@ -1,0 +1,39 @@
+# LeetCode
+力扣
+class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> list = new ArrayList<>();
+        if (s == null || words == null || s.length() == 0 || words.length == 0) {
+            return list;
+        }
+        int oneLen = words[0].length();
+        int len = s.length();
+        if (len < oneLen * words.length) {
+            return list;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+        for (int i = 0; i <= s.length() - oneLen * words.length; i++) {
+            Map<String, Integer> tmpMap = new HashMap<>(map);
+            int j = i;
+            while (j <= s.length() - oneLen) {
+                String first = s.substring(j, j + oneLen);
+                if (!tmpMap.containsKey(first)) {
+                    break;
+                }
+                tmpMap.put(first, tmpMap.get(first) - 1);
+                if (tmpMap.get(first) == 0) {
+                    tmpMap.remove(first);
+                }
+                if (tmpMap.size() == 0) {
+                    list.add(i);
+                    break;
+                }
+                j = j + oneLen;
+            }
+        }
+        return list;
+    }
+}
