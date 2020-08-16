@@ -1,26 +1,11 @@
-# LeetCode
-力扣
 class Solution {
+    // 二分查找思想
+    // 根据题目意思，数组中有且仅有 1 个数字出现重复 2 次以上，其他数字都是[1,N]范围
+    // 通过二分思想，找到范围内的中间数字，假设为 a，然后遍历数组找出小于或者等于这个数字的个数，假设为 x，如果 x <= a，那么说明[1,a]这个范围不存在重复数字
+    // 如果x>a，说明在[a,N]范围存在重复数字，于是再从[a,N]范围进行二分查找
+    // 按照相同的思想，进行查找
     public int findDuplicate(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        for (int i = 0; i < nums.length; i++) {
-            int pos = Math.abs(nums[i]);
-            if (nums[pos] < 0) {
-                return Math.abs(nums[i]);
-            }
-            nums[pos] = -nums[pos];
-        }
-        return 0;
-    }
-}
-
-方法二：
-class Solution {
-    // 二分查找
-    public int findDuplicate(int[] nums) {
-        if (nums.length == 0) {
+        if (nums == null || nums.length == 0) {
             return 0;
         }
         int left = 0;
@@ -28,18 +13,17 @@ class Solution {
         int res = 0;
         // 这里的等于是为了防止数组中只有两个数字的情况，例如 1，1
         while (left <= right) {
-            int mid = (left + right) / 2;
+            int mid = left + (right - left) / 2;
             int count = 0;
             for (int num : nums) {
-                count += num <= mid ? 1 : 0; 
+                count += num <= mid ? 1 : 0;
             }
             if (count <= mid) {
                 left = mid + 1;
             } else {
-                // 说明出现两次的数字在逻辑上的左边
-                // 逻辑上指的是：按照从 1 到 n 从小到大排序好
                 right = mid - 1;
-                res = mid;
+                // 保存结果，mid 也可能是重复的数字
+                res = mid; 
             }
         }
         return res;
