@@ -1,0 +1,35 @@
+# LeetCode
+力扣
+class Solution {
+    // 贪心算法
+    // 先按照每个一维数组的第一个元素从小到大排序
+    // 其次再遍历，维护一个 prev 遍历，表示前一个元素的下标
+    // 第一种情况：arr[prev][1] <= arr[i][0]，此时两个元素没有重叠，更新 prev = i
+    // 第二种情况：arr[prev][1] > arr[i][0] 此时再细分为两种情况：
+    // （1）arr[prev][1] > arr[prev][1] 此时前一个区间的范围大，这样留给后面区间的范围就小了，所以去掉前一个区间，更新 prev = i ，count++;
+    // （2）arr[prev][1] < arr[prev][1] 相反，后一个区间范围大，去掉后一个区间
+    // 总体而言：排序后，进行区间范围的计算，尽量寻找区间范围小的
+    public int eraseOverlapIntervals(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return 0;
+        }
+        Arrays.sort(intervals, new Comparator<int[]>(){
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        int count = 0;
+        int prev = 0;
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[prev][1] > intervals[i][0]) {
+                if (intervals[prev][1] > intervals[i][1]) {
+                    prev = i;
+                }
+                count++;
+            } else {
+                prev = i;
+            }
+        }
+        return count;
+    }
+}
