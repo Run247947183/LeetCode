@@ -1,0 +1,58 @@
+# LeetCode
+力扣
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // 找到链表中的中间值，如果链表长度为奇数，中间值唯一，为偶数，中间值两个数都可以
+    // 然后以此节点为根节点，该节点左部分就为左子树，右部分就为右子树
+    // 然后再递归的从左子树和右子树去建立树
+    // 设当前链表的左端点为left，右端点right，包含关系为「左闭右开」，即left包含在链表中而right 不包含在链表中
+    public TreeNode sortedListToBST(ListNode head) {
+        // 
+        return buildTree(head, null);
+    }
+    public TreeNode buildTree(ListNode left, ListNode right) {
+        if (left == right) {
+            return null;
+        }
+        ListNode mid = findMid(left, right);
+        TreeNode root = new TreeNode(mid.val);
+        // 注意：此处左右区间为左闭右开，包含left，但是不包含right
+        root.left = buildTree(left, mid);
+        root.right = buildTree(mid.next, right);
+        return root;
+    }
+    // 找到当前链表区间的中间节点
+    public ListNode findMid(ListNode left, ListNode right) {
+        ListNode slow = left;
+        ListNode fast = left;
+        while (fast != right && fast.next != right) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
