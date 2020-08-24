@@ -1,0 +1,28 @@
+# LeetCode
+力扣
+class Solution {
+    // 注意：字符串的长度不一定是偶数，也可以是奇数
+    public boolean repeatedSubstringPattern(String s) {
+        int len = s.length();
+        if (s == null || len == 0) {
+            return false;
+        }
+        // 枚举字符串的前缀
+        // i 就为前缀字符串的长度
+        for (int i = 1; i <= len / 2; i++) {
+            if (len % i == 0) {
+                boolean tag = false;
+                for (int j = i; j < len; j++) {
+                    if (s.charAt(j) != s.charAt(j - i)) {
+                        tag = true;
+                        break;
+                    }
+                }
+                if (!tag) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
