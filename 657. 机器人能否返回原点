@@ -1,0 +1,23 @@
+# LeetCode
+力扣
+# LeetCode
+力扣
+class Solution {
+    public boolean judgeCircle(String moves) {
+        char[] chars = moves.toCharArray();
+        int col = 0;
+        int row = 0;
+        for (char x : chars) {
+            if (x == 'U') {
+                row++;
+            } else if (x == 'D') {
+                row--;
+            } else if (x == 'L') {
+                col++;
+            } else {
+                col--;
+            }
+        }
+        return col == 0 && row == 0;
+    }
+}
