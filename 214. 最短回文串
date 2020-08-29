@@ -1,0 +1,30 @@
+# LeetCode
+力扣
+class Solution {
+    public String shortestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        int left = 0;
+        int right = s.length() - 1;
+        // 找到 s 字符串的最长前缀连续回文子串
+        while (right >= 0) {
+            if (s.charAt(left) == s.charAt(right)) {
+                left++;
+            }
+            right--;
+        }
+        // 如果整个字符串都是回文直接返回
+        if (left == s.length()) {
+            return s;
+        }
+        // s 字符串后面不构成前缀回文字符串的子串
+        String after = s.substring(left);
+        // 将他进行反转
+        String head = new StringBuilder(after).reverse().toString();
+        // 构成最短的回文串，之所以要对前面部分进行递归，继续寻找最短回文串
+        // 是因为可能 0 到 left 区域内不是回文串，但是最短的前缀回文串一定在这个区间内
+        // 所以只要递归寻找即可
+        return head + shortestPalindrome(s.substring(0, left)) + after;
+    }
+}
