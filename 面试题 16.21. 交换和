@@ -1,0 +1,21 @@
+# LeetCode
+力扣
+class Solution {
+    public int[] findSwapValues(int[] array1, int[] array2) {
+        Set<Integer> set = new HashSet<>();
+        int s = 0;
+        for(int i : array1)
+            s += i;
+        for(int i : array2){
+            s -= i;
+            set.add(i);
+        }
+        if(s % 2 != 0)
+            return new int[]{};
+        for(int i : array1){
+            if(set.contains(i - s/2))
+                return new int[]{i , i - s/2};
+        }
+        return new int[]{};
+    }
+}
