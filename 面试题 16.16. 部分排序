@@ -1,0 +1,31 @@
+# LeetCode
+力扣
+class Solution {
+    // 双指针 + 一次遍历
+    // right 表示排序区间的右位置，从开始到遍历到某一个位置，需要记录最大值，如果当前位置元素的值小于目前的最大值，则表示该位置为 right，需要排序区间的右位置，如果当前位置元素的值大于max最大值，则进行 max 更新
+    // left 也是类似的，表示排序区间的左位置，从最后一个元素往前遍历，这个遍历的过程中维护最小值 min，如果当前元素的值大于最小值 min，则该位置为 left，需要排序区间的左位置，同样也需要更新最小值 min
+        public int[] subSort(int[] array) {
+        if (array == null || array.length == 0) {
+            return new int[]{-1, -1};
+        }
+        int left = -1;
+        int right = -1;
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        int len = array.length;
+        for (int i = 0; i < len; i++) {
+            if (array[i] < max) {
+                right = i;
+            } else {
+                max = array[i];
+            }
+
+            if (array[len - 1 - i] > min) {
+                left = len - 1 - i;
+            } else {
+                min = array[len - 1 - i];
+            }
+        }
+        return new int[]{left, right};
+    }
+}
