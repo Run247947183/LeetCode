@@ -1,0 +1,61 @@
+# LeetCode
+力扣
+class Solution {
+    public int calculate(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        Stack<Integer> stack = new Stack<>();
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ' ') {
+                continue;
+            }
+            if (chars[i] >= '0' && chars[i] <= '9') {
+                int num = helper(chars, i);
+                i = tag;
+                stack.push(num);
+            } else {
+                int j = i + 1;
+                while (j < chars.length) {
+                    if (chars[j] == ' ') {
+                        j++;
+                    } else {
+                        break;
+                    }
+                }
+                int num = helper(chars, j);
+                if (chars[i] == '+') {
+                    stack.push(num);
+                } else if (chars[i] == '-') {
+                    stack.push(-num);
+                } else if (chars[i] == '/') {
+                    stack.push(stack.pop() / num); 
+                } else {
+                    stack.push(stack.pop() * num);
+                }
+                i = tag;
+            }
+        }
+        int sum = 0;
+        while (!stack.isEmpty()) {
+            sum += stack.pop();
+        }
+        return sum;
+    }
+    public int tag = 0;
+    // 找到下一个连续的整数
+    public int helper(char[] chars, int pos) {
+        int sum = chars[pos] - '0';
+        pos = pos + 1;
+        while (pos < chars.length) {
+            if (chars[pos] < '0' || chars[pos] > '9') {
+                break;
+            }
+            sum = sum * 10 + (chars[pos] - '0');
+            pos++;
+        }
+        tag = pos - 1;
+        return sum;
+    }
+}
