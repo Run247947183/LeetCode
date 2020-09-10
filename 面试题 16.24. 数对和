@@ -1,0 +1,26 @@
+# LeetCode
+力扣
+class Solution {
+    public List<List<Integer>> pairSums(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        for (int num : nums) {
+            if (map.get(num) == 0) {
+                continue;
+            }
+            int tag = target - num;
+            if (map.getOrDefault(tag, 0) > 0) {
+                if (tag == num && map.get(tag) == 1) {
+                    continue;
+                }
+                map.put(tag, map.get(tag) - 1);
+                map.put(num, map.get(num) - 1);
+                res.add(Arrays.asList(num, tag));
+            }
+        }
+        return res;
+    }
+}
