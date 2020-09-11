@@ -1,0 +1,23 @@
+# LeetCode
+力扣
+class Solution {
+    public List<List<Integer>> res = new ArrayList<>();
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<Integer> list = new ArrayList<>();
+        dfs(k, n, 0, 1, list, 0);
+        return res;
+    }
+    public void dfs(int k, int n, int count, int pos, List<Integer> list, int times) {
+        if (times == k) {
+            if (count == n) {
+                res.add(new ArrayList<>(list));
+            }
+            return;
+        }
+        for (int i = pos; i <= 9; i++) {
+            list.add(i);
+            dfs(k, n, count + i, i + 1, list, times + 1);
+            list.remove(list.size() - 1);
+        }
+    }
+}
