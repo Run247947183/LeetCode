@@ -1,0 +1,35 @@
+# LeetCode
+力扣
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        List<Double> list = new ArrayList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            double sum = 0;
+            for (int i = 0; i < size; i++) {
+                TreeNode cur = queue.poll();
+                sum += cur.val;
+                if (cur.left != null) {
+                    queue.offer(cur.left);
+                }  
+                if (cur.right != null) {
+                    queue.offer(cur.right);
+                }
+            }
+            double tmp = sum / size;
+            list.add(tmp);
+        }
+        return list;
+    }
+}
