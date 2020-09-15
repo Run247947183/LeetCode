@@ -1,0 +1,29 @@
+# LeetCode
+力扣
+class Solution {
+    // 举例：我们将 a b 两个元素从原数组搬运到 C 目标数组中
+    // 先将 a 搬运到 B，再将 b 搬运到 C，然后就可以将 a 从 B 帮运到 C
+    // 那么A有N个元素的情况也是相同的
+    // 先将小的元素搬运到 B ，然后再从 B 搬运到 C
+    public void hanota(List<Integer> A, List<Integer> B, List<Integer> C) {
+        helper(A.size(), A, B, C);
+    }
+    // 这里的 A 指的是需要搬运的数组，num 指的是搬运数组 A 剩下的元素个数
+    // B 指的是辅助数组
+    // C 指的是目的数组
+    // 并不一定指的是 A， B ，C
+    public void helper(int num, List<Integer> A, List<Integer> B, List<Integer> C) {
+        if (num == 1) {
+            // 当搬运数组的个数只剩下一个时，就可以直接搬运
+            C.add(A.get(A.size() - 1));
+            A.remove(A.size() - 1);
+        } else {
+            // 先将 A 的元素搬运到 B 辅助数组中，此时 C 是辅助数组
+            helper(num - 1, A, C, B);
+            C.add(A.get(A.size() - 1));
+            A.remove(A.size() - 1);
+            // 然后再从 B 搬运到 C 目的数组中，此时 A 是辅助数组
+            helper(num - 1, B, A, C);
+        }
+    }
+}
