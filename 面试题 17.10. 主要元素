@@ -1,0 +1,35 @@
+# LeetCode
+力扣
+class Solution {
+    public int majorityElement(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return -1;
+        }
+        // 通过投票法，找到出现次数超过数组长度一半的元素
+        int tag = nums[0];
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (tag == nums[i]) {
+                count++;
+            } else {
+                count--;
+            }
+            if (count == 0) {
+                tag = nums[i];
+                count = 1;
+            }
+        }
+        // 找到了这个元素后，进行判断，判断它出现的次数是否大于数组长度的一半
+        int count2 = 0;
+        int half = nums.length / 2 + 1;
+        for (int num : nums) {
+            if (tag == num) {
+                count2++;
+            }
+            if (count2 >= half) {
+                return tag;
+            }
+        }
+        return -1;
+    }
+}
