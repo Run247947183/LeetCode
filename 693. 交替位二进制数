@@ -1,0 +1,17 @@
+public boolean hasAlternatingBits(int n) {
+    boolean res = true;
+    int pre = -1;
+    while(n != 0){
+
+        if(pre != -1 && pre == (n & 1)){
+            res = false;
+            break;
+        }else{
+            pre = n & 1;
+            n = n >> 1;
+        }
+
+    }
+
+    return res;
+}
