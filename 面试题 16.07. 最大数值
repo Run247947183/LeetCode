@@ -1,0 +1,10 @@
+class Solution {
+    public int maximum(int a, int b) {
+        int []num=new int[2];
+        num[0]=a;
+        num[1]=b;
+        Arrays.sort(num);
+        return num[1];
+    }
+}
+
