@@ -6,7 +6,7 @@ class Solution {
     // cur 遇到 1 则往前移动
     // cur 会从 0 号位置开始遍历，也就是说 cur 左边的元素都确保是 0 或者 1
     // left 的位置的左边确保都是 0，当前 left 位置一定是 1
-    // right 的位置右边确保都是 2 ，当前位置可能是 1 也可能是 0 
+    // right 的位置右边确保都是 2, 当前位置可能是 1 也可能是 0 
     public void sortColors(int[] nums) {
         int cur = 0;
         int left = 0;
