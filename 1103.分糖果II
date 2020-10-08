@@ -5,7 +5,7 @@ class Solution {
             return res;
         }
         int i = 0;
-        int step = 0; // 循环次数
+        int step = 0; //循环次数
         while (candies > 0) {
             if (candies < (i + 1 + (step * num_people))) {
                 res[i] += candies;
